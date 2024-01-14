@@ -10,3 +10,4 @@ def readkey():
 def set_env():
     config = readkey()
     os.environ["OPENAI_API_KEY"] = config["OpenAI"]["OPENAI_API_KEY"] if os.environ.get('OPENAI_API_KEY') is None else os.environ["OPENAI_API_KEY"]
+    os.environ["SERPAPI_API_KEY"] = config["SERP"]["SERPAPI_API_KEY"]

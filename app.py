@@ -12,7 +12,7 @@ from langchain import OpenAI, LLMChain
 from langchain.tools import DuckDuckGoSearchRun
 from langchain.schema import AgentAction, AgentFinish
 from langchain.chat_models import ChatOpenAI
-from utils.tools import duck
+from utils.tools import duck, google_search
 from recommender.recommender_template import CustomPromptTemplate, CustomOutputParser
 from prompts.persona import REACT_TEMPLATE
 from recommender.recommender_agent import Recommender
@@ -20,9 +20,14 @@ from recommender.recommender_agent import Recommender
 # Set up the tools available to the agent
 tools = [
     Tool(
-        name="Search bodybuilding",
-        func=duck,
-        description="Useful for answering medical and pharmacological questions"
+        name = "Search bodybuilding",
+        func = duck,
+        description="Useful for answering questions related to bodybuilding"
+    ),
+    Tool(
+        name = "Search livestrong",
+        func = duck,
+        description="Useful for broader health and fitness topics"
     )
 ]
 
