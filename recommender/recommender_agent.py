@@ -5,7 +5,7 @@ from utils.readkey import set_env
 set_env()
 
 from langchain.chains import LLMChain
-from langchain.memory import ConversationBufferMemory
+from langchain.memory import ConversationBufferMemory, ConversationSummaryMemory
 from langchain.prompts import ChatPromptTemplate, HumanMessagePromptTemplate, MessagesPlaceholder
 from langchain.schema import SystemMessage
 from langchain.chat_models import ChatOpenAI
@@ -19,7 +19,7 @@ class Recommender:
         self.llm = ChatOpenAI(model="gpt-4", temperature=0, openai_api_key=self.openai_api_key)
         self.llm_feedback = None
         self.prompt = self.create_prompt_template()
-        self.memory = self.initialize_memory()
+        # self.memory = self.initialize_memory()
         self.agent_executor = None
 
     def create_prompt_template(self):
@@ -29,8 +29,11 @@ class Recommender:
             HumanMessagePromptTemplate.from_template("{human_input}")
         ])
 
-    def initialize_memory(self):
-        return ConversationBufferMemory(memory_key="chat_history", return_messages=True)
+    # def initialize_memory(self):
+    #     return ConversationBufferMemory(memory_key="chat_history", return_messages=True)
+
+    def memory(self):
+        return ConversationSummaryMemory(llm=self.llm)
 
     def create_llm_chain(self):
         return LLMChain(
@@ -43,7 +46,21 @@ class Recommender:
     def agent_exec(self, agent_executor):
         self.agent_executor = agent_executor
 
+    # def respond_to_input(self, user_input):
+    #     response = self.agent_executor.run(user_input)
+    #     # chat_history = [(user_input, response)]
+    #     # chat_history = ({"input", user_input}, {"output", response})
+    #     # memory = self.memory.save_context()
+    #     chat_history = ConversationSummaryMemory(llm=self.llm)
+    #     chat_history.save_context({"input": user_input}, {"output": response})
+    #     return chat_history
+        
     def respond_to_input(self, user_input):
+        # Process the user input
         response = self.agent_executor.run(user_input)
+
+        # Format the response as a list of tuples [(user_input, response)]
         chat_history = [(user_input, response)]
+
+        # Return an empty string for the msg textbox to clear it and the updated chat history for the chatbot
         return "", chat_history
