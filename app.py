@@ -32,14 +32,12 @@ tools = [
     )
 ]
 
-output_parser = CustomOutputParser()
 prompt = CustomPromptTemplate(
             template=REACT_TEMPLATE,
             tools=tools,
             input_variables=["input", "intermediate_steps", "history"]
         )
 
-# Setup for the agent and its execution
 output_parser = CustomOutputParser()
 llm = ChatOpenAI(model="gpt-4", temperature=0, openai_api_key=os.environ["OPENAI_API_KEY"])
 llm_chain = LLMChain(llm=llm, prompt=prompt)
@@ -53,30 +51,14 @@ agent = LLMSingleActionAgent(
 )
 
 memory = ConversationBufferMemory()
-
 agent_executor = AgentExecutor.from_agent_and_tools(agent=agent, tools=tools, verbose=True, memory=memory)
 
 rec = Recommender()
+rec.agent_exec(agent_executor)
 
-# Greeting message for the chatbot
 greeting = """
 Start personalized your goal! And we can work towards it, together!
 """
-
-rec.agent_exec(agent_executor)
-
-# with gr.Blocks() as demo:
-#     gr.Markdown('# Health Coach Agent')
-#     gr.Markdown(greeting)
-#     with gr.Row():
-#         with gr.Column():
-#             chatbot = gr.Chatbot()
-#             msg = gr.Textbox(label="Talk to me!")
-#             btn = gr.Button(value="Submit")
-#             clear = gr.ClearButton([msg, chatbot])
-
-#         # When the user submits their message, process it and update the chatbot
-#         btn.click(rec.respond_to_input, inputs=msg, outputs=[msg, chatbot])
 
 with gr.Blocks() as demo:
     gr.Markdown('# Health Advisor Agent')
@@ -90,5 +72,4 @@ with gr.Blocks() as demo:
         # When the user submits their message, process it and update the chatbot
         msg.submit(rec.respond_to_input, inputs=msg, outputs=[msg, chatbot])
 
-# Launch the Gradio app
 demo.launch()

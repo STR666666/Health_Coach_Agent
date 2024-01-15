@@ -11,6 +11,7 @@ from langchain import OpenAI, LLMChain
 from langchain.tools import DuckDuckGoSearchRun
 from langchain.schema import AgentAction, AgentFinish
 from langchain.chat_models import ChatOpenAI
+from prompts.persona import SWITCH_PERSONA
 
 # Custom prompt template class
 class CustomPromptTemplate(StringPromptTemplate):
@@ -26,6 +27,7 @@ class CustomPromptTemplate(StringPromptTemplate):
         kwargs["agent_scratchpad"] = thoughts
         kwargs["tools"] = "\n".join([f"{tool.name}: {tool.description}" for tool in self.tools])
         kwargs["tool_names"] = ", ".join([tool.name for tool in self.tools])
+        kwargs["switch_persona"] = SWITCH_PERSONA
         return self.template.format(**kwargs)
 
 

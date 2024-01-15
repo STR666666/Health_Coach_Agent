@@ -56,11 +56,6 @@ class Recommender:
     #     return chat_history
         
     def respond_to_input(self, user_input):
-        # Process the user input
         response = self.agent_executor.run(user_input)
-
-        # Format the response as a list of tuples [(user_input, response)]
         chat_history = [(user_input, response)]
-
-        # Return an empty string for the msg textbox to clear it and the updated chat history for the chatbot
         return "", chat_history
