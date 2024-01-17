@@ -6,8 +6,9 @@ set_env()
 
 # Importing langchain related modules
 from langchain.agents import Tool, AgentExecutor, LLMSingleActionAgent, AgentOutputParser
+from langchain_community.llms import OpenAI
+from langchain.chains import LLMChain
 from langchain.prompts import StringPromptTemplate
-from langchain import OpenAI, LLMChain
 from langchain.tools import DuckDuckGoSearchRun
 from langchain.schema import AgentAction, AgentFinish
 from langchain.chat_models import ChatOpenAI

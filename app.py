@@ -8,7 +8,8 @@ set_env()
 # Importing langchain related modules
 from langchain.agents import Tool, AgentExecutor, LLMSingleActionAgent, AgentOutputParser
 from langchain.prompts import StringPromptTemplate
-from langchain import OpenAI, LLMChain
+from langchain.chains import LLMChain
+from langchain_community.llms import OpenAI
 from langchain.tools import DuckDuckGoSearchRun
 from langchain.schema import AgentAction, AgentFinish
 from langchain.chat_models import ChatOpenAI
@@ -18,17 +19,29 @@ from prompts.persona import REACT_TEMPLATE
 from recommender.recommender_agent import Recommender
 from langchain.memory import ConversationBufferMemory, ConversationSummaryMemory
 
+llm = ChatOpenAI(model="gpt-4", temperature=0, openai_api_key=os.environ["OPENAI_API_KEY"])
+
 # Set up the tools available to the agent
 tools = [
     Tool(
         name = "Search bodybuilding",
         func = duck,
-        description="Useful for answering questions related to bodybuilding"
+        description = "Useful for answering questions related to bodybuilding"
     ),
     Tool(
         name = "Search livestrong",
         func = duck,
-        description="Useful for broader health and fitness topics"
+        description = "Useful for broader health and fitness topics"
+    ),
+    Tool(
+        name = "Search fitnessblender",
+        func = duck,
+        description="Useful for making health and fitness accessible and affordable for everyone"
+    ),
+    Tool(
+        name = "Search Engine",
+        func = duck,
+        description = "Useful for any health and fitness related problems."
     )
 ]
 
@@ -37,9 +50,7 @@ prompt = CustomPromptTemplate(
             tools=tools,
             input_variables=["input", "intermediate_steps", "history"]
         )
-
 output_parser = CustomOutputParser()
-llm = ChatOpenAI(model="gpt-4", temperature=0, openai_api_key=os.environ["OPENAI_API_KEY"])
 llm_chain = LLMChain(llm=llm, prompt=prompt)
 tool_names = [tool.name for tool in tools]
 

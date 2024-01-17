@@ -5,6 +5,7 @@ from utils.readkey import set_env
 set_env()
 
 from langchain.chains import LLMChain
+from langchain_community.llms import OpenAI
 from langchain.memory import ConversationBufferMemory, ConversationSummaryMemory
 from langchain.prompts import ChatPromptTemplate, HumanMessagePromptTemplate, MessagesPlaceholder
 from langchain.schema import SystemMessage
@@ -29,9 +30,6 @@ class Recommender:
             HumanMessagePromptTemplate.from_template("{human_input}")
         ])
 
-    # def initialize_memory(self):
-    #     return ConversationBufferMemory(memory_key="chat_history", return_messages=True)
-
     def memory(self):
         return ConversationSummaryMemory(llm=self.llm)
 
@@ -46,15 +44,6 @@ class Recommender:
     def agent_exec(self, agent_executor):
         self.agent_executor = agent_executor
 
-    # def respond_to_input(self, user_input):
-    #     response = self.agent_executor.run(user_input)
-    #     # chat_history = [(user_input, response)]
-    #     # chat_history = ({"input", user_input}, {"output", response})
-    #     # memory = self.memory.save_context()
-    #     chat_history = ConversationSummaryMemory(llm=self.llm)
-    #     chat_history.save_context({"input": user_input}, {"output": response})
-    #     return chat_history
-        
     def respond_to_input(self, user_input):
         response = self.agent_executor.run(user_input)
         chat_history = [(user_input, response)]
