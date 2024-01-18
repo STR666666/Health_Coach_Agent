@@ -31,7 +31,6 @@ class CustomPromptTemplate(StringPromptTemplate):
         kwargs["switch_persona"] = SWITCH_PERSONA
         return self.template.format(**kwargs)
 
-
 # Custom output parser class
 class CustomOutputParser(AgentOutputParser):
     def parse(self, llm_output: str) -> Union[AgentAction, AgentFinish]:
