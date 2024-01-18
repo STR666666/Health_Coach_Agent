@@ -42,7 +42,10 @@ class CustomOutputParser(AgentOutputParser):
         regex = r"Action\s*\d*\s*:(.*?)\nAction\s*\d*\s*Input\s*\d*\s*:[\s]*(.*)"
         match = re.search(regex, llm_output, re.DOTALL)
         if not match:
-            raise ValueError(f"Could not parse LLM output: `{llm_output}`")
+            return AgentAction(tool="None", tool_input="None", log=llm_output)
+
         action = match.group(1).strip()
         action_input = match.group(2).strip(" ").strip('"')
+
         return AgentAction(tool=action, tool_input=action_input, log=llm_output)
+    

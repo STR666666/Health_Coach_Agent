@@ -42,7 +42,7 @@ tools = [
         name = "Search Engine",
         func = duck,
         description = "Useful for any health and fitness related problems."
-    )
+    ),
 ]
 
 prompt = CustomPromptTemplate(
@@ -72,7 +72,7 @@ Start personalized your goal! And we can work towards it, together!
 """
 
 with gr.Blocks() as demo:
-    gr.Markdown('# Health Advisor Agent')
+    gr.Markdown('# Health Coach Agent')
     gr.Markdown(greeting)
     with gr.Row():
         with gr.Column():
