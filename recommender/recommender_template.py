@@ -39,6 +39,7 @@ class CustomOutputParser(AgentOutputParser):
                 return_values={"output": llm_output.split("Final Answer:")[-1].strip()},
                 log=llm_output,
             )
+
         regex = r"Action\s*\d*\s*:(.*?)\nAction\s*\d*\s*Input\s*\d*\s*:[\s]*(.*)"
         match = re.search(regex, llm_output, re.DOTALL)
         if not match:
@@ -48,4 +49,3 @@ class CustomOutputParser(AgentOutputParser):
         action_input = match.group(2).strip(" ").strip('"')
 
         return AgentAction(tool=action, tool_input=action_input, log=llm_output)
-    

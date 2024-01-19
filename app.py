@@ -19,7 +19,7 @@ from prompts.persona import REACT_TEMPLATE
 from recommender.recommender_agent import Recommender
 from langchain.memory import ConversationBufferMemory, ConversationSummaryMemory
 
-llm = ChatOpenAI(model="gpt-4", temperature=0, openai_api_key=os.environ["OPENAI_API_KEY"])
+llm = ChatOpenAI(model="gpt-4-1106-preview", temperature=0, openai_api_key=os.environ["OPENAI_API_KEY"])
 
 # Set up the tools available to the agent
 tools = [

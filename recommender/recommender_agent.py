@@ -45,6 +45,7 @@ class Recommender:
         self.agent_executor = agent_executor
 
     def respond_to_input(self, user_input):
+        print(f'user_input: {user_input}')
         response = self.agent_executor.run(user_input)
         chat_history = [(user_input, response)]
         return "", chat_history
